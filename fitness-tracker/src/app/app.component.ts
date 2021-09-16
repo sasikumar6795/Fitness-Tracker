@@ -9,10 +9,5 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class AppComponent {
   title = 'fitness-tracker';
 
-  @ViewChild('sideNav')
-  sideNav
-  openToggle()
-  {
-    console.log(this.sideNav);
-  }
+ 
 }
