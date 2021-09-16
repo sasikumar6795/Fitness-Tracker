@@ -4,13 +4,13 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar color="primary">
-            <div>
+            <div fxHide.gt-xs>
                 <Button (click)="sideNav.toggle()">
                     <mat-icon>menu</mat-icon>
                 </Button>
             </div>
             <div a routerLink="/">Logo</div>
-            <div fxFlex fxLayout fxLayoutAlign="flex-end">
+            <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
                 <ul fxLayout fxLayoutGap=10px class="navigation-links">
                     <li><a routerLink="/signup">Signup</a></li>
                     <li><a routerLink="/login">Login</a></li>
