@@ -22,6 +22,9 @@ export class NewTrainingComponent implements OnInit {
   {
     // i need to pass id of this exercise, for that we need a form
     //form.value.exercise exercise was the name used in html mat select near ngmodel
+    console.log("full form",form);
+    console.log("full value",form.value);
+    console.log("exercise",form.value.exercise);
     this.trainingService.startExercise(form.value.exercise);
   }
 
