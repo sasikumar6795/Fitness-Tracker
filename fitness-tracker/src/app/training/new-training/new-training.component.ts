@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
 
@@ -9,8 +10,7 @@ import { TrainingService } from '../training.service';
 })
 export class NewTrainingComponent implements OnInit {
 
-  @Output()
-  trainingStart = new EventEmitter<void>();
+  
   exercises:Exercise[]=[];
   constructor(private trainingService: TrainingService) { }
 
@@ -18,9 +18,11 @@ export class NewTrainingComponent implements OnInit {
     this.exercises=this.trainingService.getAvailableServices();
   }
 
-  newTraining()
+  newTraining(form: NgForm)
   {
-    this.trainingStart.emit();
+    // i need to pass id of this exercise, for that we need a form
+    //form.value.exercise exercise was the name used in html mat select near ngmodel
+    this.trainingService.startExercise(form.value.exercise);
   }
 
 }
