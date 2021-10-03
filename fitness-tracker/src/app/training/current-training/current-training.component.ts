@@ -17,42 +17,36 @@ export class CurrentTrainingComponent implements OnInit {
   constructor(private dialog:MatDialog, private trainingService: TrainingService) { }
 
   ngOnInit(): void {
-   this.onStopOrResume();
+   this.startOrResumeTimer();
   }
 
-  onStopOrResume()
-  {
-    const step =  (this.trainingService.getRunningExercises().duration/ 100) *1000;
-    this.timer=setInterval ( ()=> {
-      this.progress = this.progress +1;
-      if(this.progress>=100)
-      {
+  startOrResumeTimer() {
+    const step = this.trainingService.getRunningExercises().duration / 100 * 1000;
+    this.timer = setInterval(() => {
+      this.progress = this.progress + 1;
+      if (this.progress >= 100) {
         this.trainingService.completedExercises();
         clearInterval(this.timer);
       }
-    },step)
+    }, step);
   }
 
-  onStop()
-  {
+  onStop() {
     clearInterval(this.timer);
-   const dialogRef=this.dialog.open(StopTrainingComponent, {
-      data: { progress : this.progress},
+    const dialogRef = this.dialog.open(StopTrainingComponent, {
+      data: {
+        progress: this.progress
+      }
     });
 
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if(result)
-        {
-          this.trainingService.cancelExercise(this.progress);
-        }
-        else{
-          this.onStopOrResume();
-        }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.trainingService.cancelExercise(this.progress);
+      } else {
+        this.startOrResumeTimer();
       }
-    )
+    });
   }
-
 
 
 }
