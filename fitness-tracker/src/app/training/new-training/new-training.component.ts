@@ -4,7 +4,7 @@ import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
 import { AngularFirestore} from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
@@ -13,12 +13,37 @@ import { Observable } from 'rxjs';
 export class NewTrainingComponent implements OnInit {
 
   
-  exercises:Observable<any>;
+  exercises:Observable<Exercise[]>;
   constructor(private trainingService: TrainingService, private db: AngularFirestore) { }
 
   ngOnInit(): void {
-    this.exercises=this.db.collection('availableExercises').valueChanges();
-  }
+    this.exercises = this.db
+                         .collection('availableExercises')
+                         .snapshotChanges()
+                         .pipe(
+                          map(docArray => {
+                              return docArray.map(doc => {
+                                      return {
+                                              id: doc.payload.doc.id,
+                                              name: doc.payload.doc.data()['name'],
+                                              duration: doc.payload.doc.data()['duration'],
+                                              calories: doc.payload.doc.data()['calories']
+                                             };
+                                                        });
+                                            })
+                            );
+                          }
+  // ngOnInit(): void {
+  //   this.db.collection('availableExercises').snapshotChanges().subscribe(
+      
+  //     result =>{
+  //       for(let res of result)
+  //       {
+  //         console.log(res.payload.doc.data());
+  //       }
+  //     } 
+  //   );
+  // }
 
   newTraining(form: NgForm)
   {
@@ -31,3 +56,5 @@ export class NewTrainingComponent implements OnInit {
   }
 
 }
+  
+
