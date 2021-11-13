@@ -7,6 +7,7 @@ import { map } from "rxjs/operators";
 export class TrainingService {
     exerciseChanged =  new Subject<Exercise>();
     exercisesChanged =  new Subject<Exercise[]>();
+    finishedExercisesChanged =  new Subject<Exercise[]>();
     private availableExercise: Exercise[] =[]
     private runningExercise:Exercise;
     private exercise:Exercise[]=[];
@@ -66,9 +67,13 @@ export class TrainingService {
         return {...this.runningExercise};
     }
 
-    public getCompletedOrCancelledExercise()
+    public fetchCompletedOrCancelledExercise()
     {
-        return this.exercise.slice();
+       this.db.collection('finishedExercises').valueChanges().subscribe(
+        (exercises:Exercise[]) => {
+            this.finishedExercisesChanged.next(exercises);
+        }
+       )
     }
 
     private addDataToDb(exercise:Exercise)
