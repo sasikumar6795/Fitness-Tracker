@@ -24,14 +24,14 @@ export class TrainingService {
 
     public completedExercises()
     {
-        this.exercise.push({...this.runningExercise,date: new Date(),state:'Completed'})
+        this.addDataToDb({...this.runningExercise,date: new Date(),state:'Completed'})
         this.runningExercise=null;
         this.exerciseChanged.next(null);
     }
 
     public cancelExercise(progress:number)
     {
-        this.exercise.push({...this.runningExercise,
+        this.addDataToDb({...this.runningExercise,
             duration: this.runningExercise.duration * (progress/100),
             calories: this.runningExercise.duration * (progress/100),
             date: new Date(),
@@ -69,5 +69,10 @@ export class TrainingService {
     public getCompletedOrCancelledExercise()
     {
         return this.exercise.slice();
+    }
+
+    private addDataToDb(exercise:Exercise)
+    {
+        this.db.collection('finishedExercises').add(exercise).catch(console.log);
     }
 }
