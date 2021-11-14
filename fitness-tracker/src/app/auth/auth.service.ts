@@ -3,20 +3,25 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { AuthData } from "./auth-data.model";
 import { User } from "./user.model";
+import {AngularFireAuth} from "angularfire2/auth"
 
 @Injectable()
 export class AuthService{
-    private user: User
+    private isAuthenticated=false;
     authChange = new Subject<boolean>();
 
-    constructor(private router: Router){}
+    constructor(private router: Router, private authFir: AngularFireAuth){}
     //when the user signup
     registerUser(authData: AuthData)
     {
-        this.user= {
-            email:authData.email,
-            userId: Math.round(Math.random() * 10000)
-        };
+       this.authFir.auth.createUserWithEmailAndPassword(authData.email,authData.password)
+       .then(result => {
+           console.log(result);
+           this.authSuccessfully();
+       })
+       .catch(error => {
+           console.log(error);
+       })
 
         this.authChange.next(true);
         this.router.navigate(['/training'])
@@ -24,34 +29,34 @@ export class AuthService{
 
     login(authData: AuthData)
     {
-        this.user= {
-            email:authData.email,
-            userId: Math.round(Math.random() * 10000)
-        }; 
+        this.authFir.auth.signInWithEmailAndPassword(authData.email,authData.password)
+        .then(result => {
+            console.log(result);
+            this.authSuccessfully();
+        })
+        .catch(error => {
+            console.log(error);
+        })
 
-        this.authSuccessfully();
+       
     }
 
     logOut()
     {
-        this.user=null;
+        this.isAuthenticated=false;
         this.authSuccessfully();
     }
 
-    getUser()
-    {
-        // since this is an object other class can change the original history hence we are putting ...this.userId
-        //object spread operator
-        return {...this.user};
-    }
+   
 
     isAuth()
     {
-       return  this.user!=null;
+      return this.isAuthenticated;
     }
 
     private authSuccessfully()
     {
+        this.isAuthenticated=true;
         this.authChange.next(false);
         this.router.navigate(['/login'])
     }
