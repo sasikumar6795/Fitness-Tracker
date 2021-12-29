@@ -12,7 +12,7 @@ export class AuthService{
     private isAuthenticated=false;
     authChange = new Subject<boolean>();
 
-    constructor(private router: Router, private authFir: AngularFireAuth, private trainingService:TrainingService, private snackBar:MatSnackBar, private UIService:UIService){}
+    constructor(private router: Router, private authFir: AngularFireAuth, private trainingService:TrainingService, private UIService:UIService){}
     initAuthListener() {
         this.authFir.authState.subscribe(user => {
           if (user) {
@@ -38,9 +38,11 @@ export class AuthService{
        })
        .catch(error => {
            this.UIService.isLoadingChanged.next(false);
-           this.snackBar.open(error, null, {
-             duration:3000
-           })
+
+           this.UIService.showSnackBar(error.message,null,3000);
+          //  this.snackBar.open(error, null, {
+          //    duration:3000
+          //  })
           
        })
     }
@@ -55,9 +57,10 @@ export class AuthService{
         })
         .catch(error => {
           this.UIService.isLoadingChanged.next(false);
-          this.snackBar.open(error, null, {
-            duration:3000
-          })
+          this.UIService.showSnackBar(error.message,null,3000);
+          // this.snackBar.open(error, null, {
+          //   duration:3000
+          // })
          
         })   
     }
