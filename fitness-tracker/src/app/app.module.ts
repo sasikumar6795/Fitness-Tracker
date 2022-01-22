@@ -42,10 +42,7 @@ import { reducers, metaReducers } from './reducers';
     ReactiveFormsModule,
     AuthModule,
     TrainingModule,
-    StoreModule.forRoot({ ui: appReducer}, {}),
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
+    StoreModule.forRoot({ ui: appReducer}, {})
   ],
   providers: [AuthService, TrainingService,UIService],
   bootstrap: [AppComponent]

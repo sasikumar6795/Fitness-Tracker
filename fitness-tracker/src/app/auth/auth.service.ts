@@ -38,14 +38,17 @@ export class AuthService{
     //when the user signup
     registerUser(authData: AuthData)
     {
-      this.UIService.isLoadingChanged.next(true);
+      //this.UIService.isLoadingChanged.next(true);
+      this.store.dispatch({type:'START_LOADING'});
        this.authFir.auth.createUserWithEmailAndPassword(authData.email,authData.password)
        .then(result => {
            console.log("signup",result);
-           this.UIService.isLoadingChanged.next(false);
+           //this.UIService.isLoadingChanged.next(false);
+           this.store.dispatch({type:'STOP_LOADING'});
        })
        .catch(error => {
-           this.UIService.isLoadingChanged.next(false);
+           //this.UIService.isLoadingChanged.next(false);
+           this.store.dispatch({type:'STOP_LOADING'});
 
            this.UIService.showSnackBar(error.message,null,3000);
           //  this.snackBar.open(error, null, {
@@ -57,14 +60,17 @@ export class AuthService{
 
     login(authData: AuthData)
     {
-      this.UIService.isLoadingChanged.next(true);
+      //this.UIService.isLoadingChanged.next(true);
+      this.store.dispatch({type:'START_LOADING'});
         this.authFir.auth.signInWithEmailAndPassword(authData.email,authData.password)
         .then(result => {
           console.log("loginResult",result);
-          this.UIService.isLoadingChanged.next(false);
+          //this.UIService.isLoadingChanged.next(false);
+          this.store.dispatch({type:'STOP_LOADING'});
         })
         .catch(error => {
-          this.UIService.isLoadingChanged.next(false);
+          //this.UIService.isLoadingChanged.next(false);
+          this.store.dispatch({type:'STOP_LOADING'});
           this.UIService.showSnackBar(error.message,null,3000);
           // this.snackBar.open(error, null, {
           //   duration:3000
