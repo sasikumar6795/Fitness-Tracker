@@ -19,6 +19,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UIService } from './shared-UI/UIService';
 import { AuthModule } from './auth/auth.module';
 import { TrainingModule } from './training/training.module';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './app.reducer';
+import { reducers, metaReducers } from './reducers';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,11 @@ import { TrainingModule } from './training/training.module';
     AngularFireAuthModule,
     ReactiveFormsModule,
     AuthModule,
-    TrainingModule
+    TrainingModule,
+    StoreModule.forRoot({ ui: appReducer}, {}),
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    }),
   ],
   providers: [AuthService, TrainingService,UIService],
   bootstrap: [AppComponent]

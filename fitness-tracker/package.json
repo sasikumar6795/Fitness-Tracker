@@ -22,7 +22,7 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
-    "@ngrx/store": "^13.0.2",
+    "@ngrx/store": "^7.4.0",
     "angularfire2": "^5.4.2",
     "firebase": "^7.24.0",
     "rxjs": "~6.6.0",

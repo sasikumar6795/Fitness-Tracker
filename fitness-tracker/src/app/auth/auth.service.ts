@@ -6,13 +6,21 @@ import {AngularFireAuth} from "angularfire2/auth"
 import { TrainingService } from "../training/training.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { UIService } from "../shared-UI/UIService";
+import { Store } from "@ngrx/store";
+import * as fromApp from  '../app.reducer';
 
 @Injectable()
 export class AuthService{
     private isAuthenticated=false;
     authChange = new Subject<boolean>();
 
-    constructor(private router: Router, private authFir: AngularFireAuth, private trainingService:TrainingService, private UIService:UIService){}
+    constructor(
+      private router: Router,
+      private authFir: AngularFireAuth, 
+      private trainingService:TrainingService, 
+      private UIService:UIService,
+      private store: Store<{ui: fromApp.state}>
+      ){}
     initAuthListener() {
         this.authFir.authState.subscribe(user => {
           if (user) {
